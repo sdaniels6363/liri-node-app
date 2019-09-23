@@ -3,3 +3,6 @@
 
 # ignore nodejs library packages
 node_modules/
+
+# ignore keys
+keys.js
