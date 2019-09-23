@@ -33,5 +33,24 @@ Once the above dependencies are installed.
 
 To use this application, you'll need to first clone the repo.
 
-```git clone https://github.com/sdaniels6363/liri-node-app.git```
+Firstly, you'll want to open your terminal, and navigate to either your home directory, or one of your choosing.  When you are ready to begin installation, perform the following:
 
+```
+git clone https://github.com/sdaniels6363/liri-node-app.git
+```
+
+Once cloned, navigate to the directory that it was cloned into.
+
+```
+# For the sake of instructions we'll assume you have cloned to your home directory.
+
+cd ~/liri-node-app/
+```
+
+Your next step will be to perform the dependency installation of the necessary javascript libraries.
+
+From your terminal, issue the following commands
+
+```
+npm install
+```
