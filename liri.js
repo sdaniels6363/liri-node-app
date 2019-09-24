@@ -39,12 +39,13 @@ function specialCharsBandsInTown(artist) {
 }
 
 function bandsInTownEvents(artist) {
+  var artistName = specialCharsBandsInTown(artist);
 
   axios.get(`https://rest.bandsintown.com/artists/${artistName}/events?app_id=${bandsId}`).then(function (response) {
 
     var events = response.data // load to variable for readability
 
-    console.log(`Upcoming events for ${artist}\n("-------------------------------------------")n`)
+    console.log(`\nUpcoming events for ${artist}\n-------------------------------------------`)
 
     for (i = 0; i < events.length; i++) {
       var event = events[i];
@@ -55,11 +56,22 @@ function bandsInTownEvents(artist) {
       var region = event.venue.region;
       var eventDate = moment(event.datetime).format("MM/DD/YYYY")
 
-      if (region) {
-        var venue = `Event No: ${i+1}\nVenue Name: ${name}\nVenue Location: ${city}, ${region}, ${country}\nEvent Date: ${eventDate}`
-      } else { // depending on location region isn't populated.
-        var venue = `Event No: ${i+1}\nVenue Name: ${name}\nVenue Location: ${city}, ${country}\nEvent Date: ${eventDate}`
+      // check if value is undefined
+      var venue = `Event Number: ${i+1}\nVenue Name: ${name}\nVenue Location: `
+      
+      if (city){
+        venue = venue + `${city}, `
       }
+      if (region){
+        venue = venue + `${region}, `
+      }
+      if (country){
+        venue = venue + `${country}\n`
+      }
+
+      var venue = venue + `Event Date: ${eventDate}`
+
+    
       console.log(venue);
       console.log("-------------------------------------------")
     }
@@ -84,11 +96,10 @@ function spotifySong(song){
 
 
 var command = process.argv[2]; // this will either be concert-this, spotify-this-song, movie-this, or do-what-it-says
-
+var userInput = process.argv.slice(3).join(" ");
 switch (command) {
   case "concert-this":
-    artistName = specialCharsBandsInTown(process.argv.slice(3));
-    bandsInTownEvents(artistName);
+    bandsInTownEvents(userInput);
     break;
   case "spotify-this-song":
     break;
