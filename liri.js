@@ -16,24 +16,19 @@ var bandsId = keys.bandInTown.appId;
 function specialCharsBandsInTown(artist) {
   // checks for special characters in the artist name
   if (artist.includes("/")) {
-    artist = artist.split("/"); // split on symbol
-    artist = artist.join("%252F"); // rejoin on the required text via API
+    artist = artist.split("/").join("%252F"); // split on symbol & rejoin using the required text via API
   }
   if (artist.includes("?")) {
-    artist = artist.split("?");// split on symbol
-    artist = artist.join("%253F");// rejoin on the required text via API
+    artist = artist.split("?").join("%253F");// split on symbol & rejoin using the required text via API
   }
   if (artist.includes("*")) {
-    artist = artist.split("*");// split on symbol
-    artist = artist.join("%252A");// rejoin on the required text via API
+    artist = artist.split("*").join("%252A");// split on symbol & rejoin using the required text via API
   }
   if (artist.includes('"')) {
-    artist = artist.split('"');// split on symbol
-    artist = artist.join("%27C");// rejoin on the required text via API
+    artist = artist.split('"').join("%27C");// split on symbol & rejoin using the required text via API
   }
   if (artist.includes(" ")) {
-    artist = artist.split(" ");
-    artist = artist.join("%20");
+    artist = artist.split(" ").join("%20"); // split on space & rejoin using the required text via API
   }
   return artist;
 }
@@ -95,6 +90,17 @@ function spotifySong(song){
 }
 
 
+function movieThis(movie){
+
+}
+
+function doWhatItSays(whatItSays){
+
+}
+
+// script execution below
+
+
 var command = process.argv[2]; // this will either be concert-this, spotify-this-song, movie-this, or do-what-it-says
 var userInput = process.argv.slice(3).join(" ");
 switch (command) {
@@ -102,10 +108,13 @@ switch (command) {
     bandsInTownEvents(userInput);
     break;
   case "spotify-this-song":
+    spotifySong(userInput);
     break;
   case "movie-this":
+    movieThis(userInput);
     break;
   case "do-what-it-says":
+    doWhatItSays(userInput);
     break;
 
 }
