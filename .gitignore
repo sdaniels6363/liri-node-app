@@ -6,3 +6,6 @@ node_modules/
 
 # ignore keys
 keys.js
+
+# ignore mac stuff
+.DS_Store
