@@ -18,6 +18,15 @@ var spotify = new Spotify({
   secret: keys.spotify.secret
 });
 
+// set up logging
+var myLogFileStream = fs.createWriteStream("./log.txt",{flags: 'a'});
+var myConsole = new console.Console(myLogFileStream, myLogFileStream);
+
+function logThis(whatever){
+  console.log(whatever); // prints to stdout
+  myConsole.log(whatever); //logs to logfile
+}
+
 function specialCharsBandsInTown(artist) {
   // checks for special characters in the artist name
   if (artist.includes("/")) {
@@ -45,7 +54,7 @@ function bandsInTownEvents(artist) {
 
     var events = response.data // load to variable for readability
 
-    console.log(`\nUpcoming events for ${artist}\n-------------------------------------------`)
+    logThis(`\nUpcoming events for ${artist}\n-------------------------------------------`)
 
     for (i = 0; i < events.length; i++) {
       var event = events[i];
@@ -72,21 +81,21 @@ function bandsInTownEvents(artist) {
       var venue = venue + `Event Date: ${eventDate}`
 
 
-      console.log(venue);
-      console.log("-------------------------------------------")
+      logThis(venue);
+      logThis("-------------------------------------------")
     }
 
   }).catch(function (error) {
     if (error.response) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
+      logThis(error.response.data);
+      logThis(error.response.status);
+      logThis(error.response.headers);
     } else if (error.request) {
-      console.log(error.request);
+      logThis(error.request);
     } else {
-      console.log("Error", error.message);
+      logThis("Error", error.message);
     }
-    console.log(error.config);
+    logThis(error.config);
   })
 }
 
@@ -94,13 +103,13 @@ function spotifySong(song) {
 
   if (!song) { // if no song is defined, default to "The Sign" by Ace of Base.
     spotify.request('https://api.spotify.com/v1/tracks/0hrBpAOgrt8RXigk83LLNE').then(function (data) {
-    console.log(`
+      logThis(`
 Artist: ${data.artists[0].name}
 Song Name: ${data.name}
 Album: ${data.album.name}
 Preview URL: ${data.preview_url}       
     `)
-  });
+    });
 
   } else { // if song is defined, find that song.
     spotify.search({
@@ -108,7 +117,7 @@ Preview URL: ${data.preview_url}
       query: song
     }, function (err, data) {
       if (err) {
-        return console.log(`Error occured: ${err}`);
+        return logThis(`Error occured: ${err}`);
       }
 
       var songs = data.tracks.items;
@@ -116,7 +125,7 @@ Preview URL: ${data.preview_url}
       for (i = 0; i < songs.length; i++) {
         var song = songs[i];
 
-        console.log(`
+        logThis(`
 Artist: ${song.artists[0].name}
 Song Name: ${song.name}
 Album: ${song.album.name}
@@ -127,19 +136,18 @@ Preview URL: ${song.preview_url}
   };
 }
 
-
 function movieThis(movie) {
-  if (!movie){ // if no movie is defined, pull Mr. Nobody
+  if (!movie) { // if no movie is defined, pull Mr. Nobody
     movie = "Mr. Nobody"
   }
 
   var url = `http://www.omdbapi.com/?apikey=${omdbKey}&t=${movie}`
 
-  axios.get(url).then(function(response){
-    
+  axios.get(url).then(function (response) {
+
     var data = response.data;
 
-    console.log(`
+    logThis(`
 Title: ${data.Title}
 Release Year: ${data.Year}
 IMDB Rating: ${data.Ratings[0].Value}
@@ -153,11 +161,11 @@ Actors: ${data.Actors}
 }
 
 function doWhatItSays(whatItSays) {
-  fs.readFile(whatItSays, 'utf8', function(err, contents){
-    
+  fs.readFile(whatItSays, 'utf8', function (err, contents) {
+
     contents = contents.split('\n') // first split on new line
 
-    for (i = 0; i < contents.length;i++){
+    for (i = 0; i < contents.length; i++) {
       line = contents[i].split(",");
       command = line[0];
       query = line[1];
@@ -171,10 +179,10 @@ function doWhatItSays(whatItSays) {
         case "movie-this":
           movieThis(query);
           break;
-    }
+      }
 
-  }
-});
+    }
+  });
 }
 
 // script execution below
