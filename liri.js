@@ -1,10 +1,11 @@
 // Load Requirements
 var axios = require("axios");
 var moment = require("moment");
-var dotenv = require("dotenv").config();
+var fs = require("fs");
 var Spotify = require('node-spotify-api');
 
 // Load API Keys
+require('dotenv').config();
 var keys = require("./keys.js");
 
 // load into variables for readability.
@@ -15,7 +16,7 @@ var bandsId = keys.bandInTown.appId;
 var spotify = new Spotify({
   id: keys.spotify.id,
   secret: keys.spotify.secret
-})
+});
 
 function specialCharsBandsInTown(artist) {
   // checks for special characters in the artist name
@@ -152,7 +153,28 @@ Actors: ${data.Actors}
 }
 
 function doWhatItSays(whatItSays) {
+  fs.readFile(whatItSays, 'utf8', function(err, contents){
+    
+    contents = contents.split('\n') // first split on new line
 
+    for (i = 0; i < contents.length;i++){
+      line = contents[i].split(",");
+      command = line[0];
+      query = line[1];
+      switch (command) {
+        case "concert-this":
+          bandsInTownEvents(query);
+          break;
+        case "spotify-this-song":
+          spotifySong(query);
+          break;
+        case "movie-this":
+          movieThis(query);
+          break;
+    }
+
+  }
+});
 }
 
 // script execution below
