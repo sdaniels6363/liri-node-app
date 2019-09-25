@@ -13,10 +13,7 @@ var omdbKey = keys.omdb.key;
 var bandsId = keys.bandInTown.appId;
 
 // Load Spotify keys
-var spotify = new Spotify({
-  id: keys.spotify.id,
-  secret: keys.spotify.secret
-});
+var spotify = new Spotify(keys.spotify);
 
 // set up logging
 var myLogFileStream = fs.createWriteStream("./log.txt",{flags: 'a'});
