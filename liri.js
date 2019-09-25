@@ -128,7 +128,27 @@ Preview URL: ${song.preview_url}
 
 
 function movieThis(movie) {
+  if (!movie){ // if no movie is defined, pull Mr. Nobody
+    movie = "Mr. Nobody"
+  }
 
+  var url = `http://www.omdbapi.com/?apikey=${omdbKey}&t=${movie}`
+
+  axios.get(url).then(function(response){
+    
+    var data = response.data;
+
+    console.log(`
+Title: ${data.Title}
+Release Year: ${data.Year}
+IMDB Rating: ${data.Ratings[0].Value}
+Rotten Tomatoes Rating: ${data.Ratings[1].Value}
+Country/Countries Produced in: ${data.Country}
+Language: ${data.Language}
+Plot: ${data.Plot}
+Actors: ${data.Actors}
+    `)
+  })
 }
 
 function doWhatItSays(whatItSays) {
