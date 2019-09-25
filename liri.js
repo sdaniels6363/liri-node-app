@@ -2,16 +2,20 @@
 var axios = require("axios");
 var moment = require("moment");
 var dotenv = require("dotenv").config();
+var Spotify = require('node-spotify-api');
 
 // Load API Keys
 var keys = require("./keys.js");
 
 // load into variables for readability.
-var spotifyId = keys.spotify.id;
-var spotifySecret = keys.spotify.secret;
 var omdbKey = keys.omdb.key;
 var bandsId = keys.bandInTown.appId;
 
+// Load Spotify keys
+var spotify = new Spotify({
+  id: keys.spotify.id,
+  secret: keys.spotify.secret
+})
 
 function specialCharsBandsInTown(artist) {
   // checks for special characters in the artist name
@@ -52,21 +56,21 @@ function bandsInTownEvents(artist) {
       var eventDate = moment(event.datetime).format("MM/DD/YYYY")
 
       // check if value is undefined
-      var venue = `Event Number: ${i+1}\nVenue Name: ${name}\nVenue Location: `
-      
-      if (city){
+      var venue = `Event Number: ${i + 1}\nVenue Name: ${name}\nVenue Location: `
+
+      if (city) {
         venue = venue + `${city}, `
       }
-      if (region){
+      if (region) {
         venue = venue + `${region}, `
       }
-      if (country){
+      if (country) {
         venue = venue + `${country}\n`
       }
 
       var venue = venue + `Event Date: ${eventDate}`
 
-    
+
       console.log(venue);
       console.log("-------------------------------------------")
     }
@@ -85,16 +89,49 @@ function bandsInTownEvents(artist) {
   })
 }
 
-function spotifySong(song){
-  axios.get("")
+function spotifySong(song) {
+
+  if (!song) { // if no song is defined, default to "The Sign" by Ace of Base.
+    spotify.request('https://api.spotify.com/v1/tracks/0hrBpAOgrt8RXigk83LLNE').then(function (data) {
+    console.log(`
+Artist: ${data.artists[0].name}
+Song Name: ${data.name}
+Album: ${data.album.name}
+Preview URL: ${data.preview_url}       
+    `)
+  });
+
+  } else { // if song is defined, find that song.
+    spotify.search({
+      type: 'track',
+      query: song
+    }, function (err, data) {
+      if (err) {
+        return console.log(`Error occured: ${err}`);
+      }
+
+      var songs = data.tracks.items;
+
+      for (i = 0; i < songs.length; i++) {
+        var song = songs[i];
+
+        console.log(`
+Artist: ${song.artists[0].name}
+Song Name: ${song.name}
+Album: ${song.album.name}
+Preview URL: ${song.preview_url}
+              `)
+      }
+    });
+  };
 }
 
 
-function movieThis(movie){
+function movieThis(movie) {
 
 }
 
-function doWhatItSays(whatItSays){
+function doWhatItSays(whatItSays) {
 
 }
 
