@@ -14,7 +14,9 @@ My version of this program makes use of several functions.  There are four funct
  * bandsInTownEvents - This function is responsible for interacting with the Bands in Town API, it takes the user's input and retrieves upcoming concert dates.
  * spotifySong - This function takes advantage of the node-spotify-api library to make the API calls to spotify.  If no search is defined, we default to "The Sign" by Ace of Bass.
  * movieThis - This function is responsible for retrieving the entered movie data from the Open Movie Database API.
- * doWhatItSays - This function takes a text file, line by line, and executes the api calls defined.  It uses the following format: command,parameter.  With valid commands being:
+ * doWhatItSays - This function takes a text file, line by line, and executes the api calls defined.  It uses the following format: command,parameter.  
+ 
+ Valid commands for both the CLI and the text file are:
    * spotify-this-song
    * movie-this
    * concert-this
