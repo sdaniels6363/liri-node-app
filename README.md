@@ -31,7 +31,7 @@ concert-this,August Burns Red
 
   There are two additional functions that work in tandem with the others:
 
- * logThis - This function just takes what is output to the console, via console.log, and also writes it to a log file.
+ * logThis - This function just takes what is output to the console, via console.log, and also writes it to a log file called 'log.txt'.
 
  * specialCharsBandsInTown - This function works in tandem with _bandsInTownEvents_, and is actually run before the _bandsInTownEvents_ function fires.  It is responsible for converting any special characters to a URL encoded format expected by the API.
 
